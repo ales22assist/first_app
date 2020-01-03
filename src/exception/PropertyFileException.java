@@ -1,4 +1,4 @@
-package configuration;
+package exception;
 
 public class PropertyFileException extends java.lang.Exception {
 	
