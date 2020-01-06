@@ -16,7 +16,6 @@ public class Application {
 		private static final Logger LOGGER = Logger.getLogger(Application.class);
 		private static String tableName;
 
-		
 		public static void main(String[] args) {
 			
 				PropertyConfigurator.configure(ApplicationConf.getLogPropertyFile());
@@ -46,8 +45,7 @@ public class Application {
 					
 					System.out.println(" id: " + Integer.toString(id) + " || tool: " + tool + " || amount: " + amount.toString());
 				
-				// statement.execute("insert into " + tableName + ("1"));
-				
+				// statement.execute("insert into " + tableName + ("1"));			
 				connection.close();
 				
 			} }catch (SQLException sqlException){
