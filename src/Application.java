@@ -43,7 +43,7 @@ public class Application {
 					String tool = resultSet.getString("tool");
 					Integer amount = resultSet.getInt("total_amount");
 					
-					System.out.println(" id: " + Integer.toString(id) + " || tool: " + tool + " || amount: " + amount.toString());
+					System.out.println("|| id: " + Integer.toString(id) + " || tool: " + tool + " || amount: " + amount.toString() + " ||");
 				
 				// statement.execute("insert into " + tableName + ("1"));			
 				connection.close();
