@@ -1,4 +1,4 @@
-package database;
+package database_connection_mng;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -18,9 +18,13 @@ public class DatabaseConnectionManager {
 		return connectionInstance;
 	}
 
-	public void connect() throws SQLException {
-		connection = DriverManager.getConnection(ApplicationAccessConf.getUrl(), ApplicationAccessConf.getUserName(),
-				ApplicationAccessConf.getUserPassword());
+	public void connect() {
+		try {
+			connection = DriverManager.getConnection(ApplicationAccessConf.getUrl(), ApplicationAccessConf.getUserName(),
+					ApplicationAccessConf.getUserPassword());
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 		System.out.println("Successfully established database connection...");
 	}
 
@@ -28,13 +32,17 @@ public class DatabaseConnectionManager {
 		return connection;
 	}
 
-	public void disconnect() throws SQLException {
-		connection.close();
+	public void disconnect() {
+		try {
+			connection.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		System.out.println("Successfully disconnected from database...");
 	}
 
 	public static void connectDriver() {
-
 		try {
 			Class.forName(ApplicationAccessConf.getDriverClass());
 
@@ -44,4 +52,5 @@ public class DatabaseConnectionManager {
 			return;
 		}
 	}
+
 }

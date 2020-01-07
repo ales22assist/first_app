@@ -2,21 +2,21 @@ package models;
 
 public class ToolKmenova {
 
-	private int toolId;
-	private String toolName;
-	private int toolAmount;
+	private int toolId_K;
+	private String toolName_K;
+	private int toolAmount_K;
 
 	public ToolKmenova() {
 	}
 
 	public ToolKmenova(int toolId, String toolName, int toolAmount) {
-		this.toolId = toolId;
-		this.toolName = toolName;
-		this.toolAmount = toolAmount;
+		this.toolId_K = toolId;
+		this.toolName_K = toolName;
+		this.toolAmount_K = toolAmount;
 	}
 
 	@Override
 	public String toString() {
-		return "Tool [toolId=" + toolId + ", toolName=" + toolName + ", toolAmount=" + toolAmount + "]";
+		return "Tool [toolId=" + toolId_K + ", toolName=" + toolName_K + ", toolAmount=" + toolAmount_K + "]";
 	}
 }
