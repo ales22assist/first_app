@@ -1,4 +1,5 @@
 import configuration.*;
+import db_connection.DatabaseConnection;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -22,14 +23,8 @@ public class Application {
 				
 			LOGGER.debug("BEGIN");
 			
-			try {
-				Class.forName(ApplicationConf.getDriverClass());
-			} catch (ClassNotFoundException exception) {
-				System.out.println("failed to load driver");
-				System.out.println(exception);
-				return;
-			}
-			
+			DatabaseConnection.connectDriver();	
+
 			tableName = ApplicationConf.getTabName();
 
 			try {

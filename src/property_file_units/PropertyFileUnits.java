@@ -26,6 +26,7 @@ public class PropertyFileUnits {
 			FileInputStream fileInputStream = new FileInputStream(PROPERTY_FILE);  
 			properties.load(fileInputStream);
 			fileInputStream.close();
+			
 		} catch (IOException ex){
 			LOGGER.error(ex);
 		}
