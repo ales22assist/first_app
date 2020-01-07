@@ -1,15 +1,15 @@
 package models;
 
-public class Tool {
+public class ToolKmenova {
 
 	private int toolId;
 	private String toolName;
 	private int toolAmount;
 
-	public Tool() {
+	public ToolKmenova() {
 	}
 
-	public Tool(int toolId, String toolName, int toolAmount) {
+	public ToolKmenova(int toolId, String toolName, int toolAmount) {
 		this.toolId = toolId;
 		this.toolName = toolName;
 		this.toolAmount = toolAmount;
