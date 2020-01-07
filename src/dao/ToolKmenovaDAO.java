@@ -17,9 +17,9 @@ public class ToolKmenovaDAO {
 		try {
 			DatabaseConnectionManager databaseConnection = DatabaseConnectionManager.getManagerInstance();
 			databaseConnection.connect();
-
+	
 			PreparedStatement saveNewTool = databaseConnection.getManagerInstance().getConnectionObject()
-					.prepareStatement("INSERT INTO inventory VALUES(?,?,?)");
+					.prepareStatement("INSERT INTO inventory VALUES(?,?,?)"); // INSERT INTO inventory (toolId, toolName, toolAmount) VALUES(1, "xxx", 19) ON DUPLICATE KEY UPDATE toolName="xxx", age=19  
 			saveNewTool.setInt(1, toolId);
 			saveNewTool.setString(2, toolName);
 			saveNewTool.setInt(3, toolAmount);
