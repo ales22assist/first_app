@@ -9,30 +9,32 @@ import org.apache.log4j.Logger;
 import configuration.Config;
 import exception.PropertyFileException;
 
-
 public class PropertyFileUnits {
 
 	private static final Logger LOGGER = Logger.getLogger(PropertyFileUnits.class);
-	
+
 	private static PropertyFileUnits INSTANCE;
 	private final String PROPERTY_FILE = Config.getPropertyFile();
 	private final Properties properties;
-	
+
 	public PropertyFileUnits() {
+
 		LOGGER.debug("begin");
 		properties = new Properties();
-		
-		try{
-			FileInputStream fileInputStream = new FileInputStream(PROPERTY_FILE);  
+
+		try {
+			FileInputStream fileInputStream = new FileInputStream(PROPERTY_FILE);
 			properties.load(fileInputStream);
 			fileInputStream.close();
-			
-		} catch (IOException ex){
+
+		} catch (IOException ex) {
+
 			LOGGER.error(ex);
 		}
 	}
-	
+
 	public static PropertyFileUnits getInstance() {
+
 		LOGGER.debug("begin");
 		if (INSTANCE == null) {
 			LOGGER.debug("New instance");
@@ -42,17 +44,18 @@ public class PropertyFileUnits {
 		}
 		return INSTANCE;
 	}
-	
+
 	public static void cancelInstance() {
 		INSTANCE = null;
 	}
-	
-	public String getProperty (String propertyName) throws PropertyFileException {
+
+	public String getProperty(String propertyName) throws PropertyFileException {
+
 		LOGGER.debug("begin");
-		
 		String propertyValue = properties.getProperty(propertyName);
 		LOGGER.debug("propertyName: " + propertyName);
-		LOGGER.debug("propertyValue: " + propertyValue);if (propertyValue == null) {
+		LOGGER.debug("propertyValue: " + propertyValue);
+		if (propertyValue == null) {
 			LOGGER.error("Property not found");
 			PropertyFileException propertyFileException = new PropertyFileException("Property not Found");
 			propertyFileException.setPropertyName(propertyName);
@@ -60,6 +63,6 @@ public class PropertyFileUnits {
 			throw propertyFileException;
 		}
 		return propertyValue;
-	
+
 	}
 }

@@ -1,24 +1,27 @@
 package configuration;
 
 import property_file_units.PropertyFileUnits;
+
+import org.apache.log4j.PropertyConfigurator;
+
 import exception.*;
 
-public class ApplicationConf {
-	
+public class ApplicationAccessConf {
+
 	private static final String LOG_PROPERTY_FILE = "C:\\dev\\logger\\log.properties";
 	static String propertyStringValue;
 	PropertyFileUnits propertyFileUnits = PropertyFileUnits.getInstance();
-	
+
 	public static String getDriverClass() {
-		
-			try {
-				return PropertyFileUnits.getInstance().getProperty("DRIVER_CLASS");
-			} catch (PropertyFileException e) {
-				e.printStackTrace();
-				return "";
-			}
+
+		try {
+			return PropertyFileUnits.getInstance().getProperty("DRIVER_CLASS");
+		} catch (PropertyFileException e) {
+			e.printStackTrace();
+			return "";
 		}
-	
+	}
+
 	public static String getUrl() {
 		try {
 			return PropertyFileUnits.getInstance().getProperty("URL");
@@ -27,6 +30,7 @@ public class ApplicationConf {
 			return "";
 		}
 	}
+
 	public static String getUserName() {
 		try {
 			return PropertyFileUnits.getInstance().getProperty("USER_NAME");
@@ -35,6 +39,7 @@ public class ApplicationConf {
 			return "";
 		}
 	}
+
 	public static String getUserPassword() {
 		try {
 			return PropertyFileUnits.getInstance().getProperty("USER_PASSWORD");
@@ -43,6 +48,7 @@ public class ApplicationConf {
 			return "";
 		}
 	}
+
 	public static String getTabName() {
 		try {
 			return PropertyFileUnits.getInstance().getProperty("TAB_NAME");
@@ -51,7 +57,7 @@ public class ApplicationConf {
 			return "";
 		}
 	}
-	
+
 	public static String getLogPropertyFile() {
 		return LOG_PROPERTY_FILE;
 	}
