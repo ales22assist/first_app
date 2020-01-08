@@ -13,37 +13,24 @@ public class ToolDAO {
 	public ToolDAO() {
 	}
 
-	public static void createInventoryTables(Statement statement) {
+	public static void createInventoryTables(Statement statement) throws SQLException {
 
-		try {
+		
 			statement.execute("CREATE TABLE IF NOT EXISTS public.inventory_kmenova(id INTEGER NOT NULL, "
 					+ "tool_description TEXT COLLATE pg_catalog.\"default\", total_amount integer, "
 					+ "CONSTRAINT inventory_kmenova_pkey PRIMARY KEY (id))");
-		} catch (SQLException exception) {
-			// to be modified as>>>> LOGGER debug "......."
-		}
-
-		try {
+		
 			statement.execute("CREATE TABLE IF NOT EXISTS public.inventory_zmenova(id INTEGER NOT NULL, "
 					+ "tool_description text COLLATE pg_catalog.\"default\", " + "tool_amount_change integer NOT NULL, "
 					+ "operation_successed BOOLEAN DEFAULT false, "
 					+ "CONSTRAINT inventory_zmenova_pkey PRIMARY KEY (id))");
 
-		} catch (SQLException exception) {
-			// to be modified as>>>> LOGGER debug "......."
-		}
-		
-		try {
 			statement.execute("CREATE TABLE IF NOT EXISTS public.inventory_protocol(id INTEGER NOT NULL, "
 					+ "tool_description text COLLATE pg_catalog.\"default\", " + "tool_amount_change integer NOT NULL, "
 					+ "created_at timestamp(0) without time zone NOT NULL DEFAULT now(), "
 					+ "updated_at timestamp(0) without time zone NOT NULL DEFAULT now(), "
 					+ "operation_successed BOOLEAN DEFAULT false, "
 					+ "CONSTRAINT inventory_protocol_pkey PRIMARY KEY (id))");
-
-		} catch (Exception exception) {
-			// to be modified as>>>> LOGGER debug "......."
-		}
 			
 	}
 

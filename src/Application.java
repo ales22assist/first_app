@@ -24,10 +24,8 @@ public class Application {
 			LOGGER.debug("------------Successfully established database connection...------------");
 
 			ToolDAO.createInventoryTables(connection.createStatement());
-			ToolDAO.saveNewToolToKmenova(4, "Lopata", 10);
+			ToolDAO.saveNewToolToKmenova(11, "Lopata", 10);
 			ToolDAO.displayDataKmenova();
-			ToolDAO.displayDataZmenova();
-			ToolDAO.displayDataProtocol();
 
 		} catch (Exception e) {
 			// TODO: handle exception
