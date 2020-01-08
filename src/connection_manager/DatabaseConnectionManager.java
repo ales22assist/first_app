@@ -1,10 +1,11 @@
-package database_connection_mng;
+package connection_manager;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
 import configuration.ApplicationAccessConf;
+
 
 public class DatabaseConnectionManager {
 
@@ -13,9 +14,24 @@ public class DatabaseConnectionManager {
 
 	private DatabaseConnectionManager() {
 	}
+	
+	public static void connectDriver() {
+		try {
+			Class.forName(ApplicationAccessConf.getDriverClass());
+
+		} catch (ClassNotFoundException exception) {
+			System.out.println("Driver not loaded...");
+			System.out.println(exception);
+			return;
+		}
+	}
 
 	public static DatabaseConnectionManager getManagerInstance() {
 		return connectionInstance;
+	}	
+	
+	public Connection getConnectionObject() {
+		return connection;
 	}
 
 	public void connect() {
@@ -28,29 +44,14 @@ public class DatabaseConnectionManager {
 		System.out.println("Successfully established database connection...");
 	}
 
-	public Connection getConnectionObject() {
-		return connection;
-	}
+
 
 	public void disconnect() {
 		try {
 			connection.close();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		System.out.println("Successfully disconnected from database...");
 	}
-
-	public static void connectDriver() {
-		try {
-			Class.forName(ApplicationAccessConf.getDriverClass());
-
-		} catch (ClassNotFoundException exception) {
-			System.out.println("Driver not loaded...");
-			System.out.println(exception);
-			return;
-		}
-	}
-
 }

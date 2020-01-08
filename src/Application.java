@@ -1,8 +1,9 @@
 import configuration.*;
-import dao.ToolKmenovaDAO;
-import database_connection_mng.DatabaseConnectionManager;
+import connection_manager.DatabaseConnectionManager;
+import dao.ToolDAO;
 
-import java.sql.SQLException;
+import java.sql.Connection;
+import java.sql.DriverManager;
 
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
@@ -16,17 +17,20 @@ public class Application {
 		PropertyConfigurator.configure(ApplicationAccessConf.getLogPropertyFile());
 
 		LOGGER.debug("BEGIN");
-		DatabaseConnectionManager.connectDriver();
-		ToolKmenovaDAO lopata = new ToolKmenovaDAO();
+		DatabaseConnectionManager.connectDriver();		
 
-		try {
-			lopata.saveNewToolToKmenova(11, "Lopaata", 10);
-			lopata.displayDataKmenova();
-
-		} catch (SQLException exception) {
-			System.out.println(exception);
+		try (Connection connection = DriverManager.getConnection(ApplicationAccessConf.getUrl(), 
+																ApplicationAccessConf.getUserName(),
+																ApplicationAccessConf.getUserPassword());){
+			LOGGER.debug("------------Successfully established database connection...------------");
+			
+			ToolDAO.createInventoryTables(connection.createStatement());
+			ToolDAO.displayDataKmenova();
+			
+		} catch (Exception e) {
+			// TODO: handle exception
 		}
-		DatabaseConnectionManager.getManagerInstance().disconnect();
+
 		LOGGER.debug("END");
 	}
 }

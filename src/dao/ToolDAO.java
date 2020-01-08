@@ -6,11 +6,37 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
 
-import database_connection_mng.DatabaseConnectionManager;
+import connection_manager.DatabaseConnectionManager;
 
-public class ToolKmenovaDAO {
+public class ToolDAO {
 
-	public ToolKmenovaDAO() {
+	public ToolDAO() {
+	}
+	
+	public static void createInventoryTables(Statement statement) {
+		
+		try {
+			statement.execute("CREATE TABLE inventory_kmenova(id INTEGER NOT NULL, "
+															+ "tool_description TEXT COLLATE pg_catalog.\"default\", total_amount integer, "
+															+ "created_at timestamp(0) without time zone NOT NULL DEFAULT now(), "
+															+ "updated_at timestamp(0) without time zone NOT NULL DEFAULT now(),"
+															+ "CONSTRAINT inventory_kmenova_pkey PRIMARY KEY (id))");
+		} catch (SQLException exception) {
+			// to be modified as>>>>  LOGGER debug "......."
+		} 
+		
+		try {
+			statement.execute("CREATE TABLE inventory_zmenova(id INTEGER NOT NULL, " 
+															+ "tool_description text COLLATE pg_catalog.\"default\", "
+															+ "tool_amount_change integer NOT NULL, "
+															+ "created_at timestamp(0) without time zone NOT NULL DEFAULT now(), "
+															+ "updated_at timestamp(0) without time zone NOT NULL DEFAULT now(), "
+															+ "operation_successed BOOLEAN DEFAULT false, "
+															+ "CONSTRAINT inventory_zmenova_pkey PRIMARY KEY (id))");
+			
+		} catch (SQLException exception) {
+			// to be modified as>>>>  LOGGER debug "......."
+		}	
 	}
 
 	public void saveNewToolToKmenova(int toolId, String toolName, int toolAmount) throws SQLException {
@@ -18,7 +44,7 @@ public class ToolKmenovaDAO {
 			DatabaseConnectionManager databaseConnection = DatabaseConnectionManager.getManagerInstance();
 			databaseConnection.connect();
 	
-			PreparedStatement saveNewTool = databaseConnection.getManagerInstance().getConnectionObject()
+			PreparedStatement saveNewTool = DatabaseConnectionManager.getManagerInstance().getConnectionObject()
 					.prepareStatement("INSERT INTO inventory VALUES(?,?,?)"); // INSERT INTO inventory (toolId, toolName, toolAmount) VALUES(1, "xxx", 19) ON DUPLICATE KEY UPDATE toolName="xxx", age=19  
 			saveNewTool.setInt(1, toolId);
 			saveNewTool.setString(2, toolName);
@@ -31,7 +57,7 @@ public class ToolKmenovaDAO {
 		}
 	}
 
-	public void displayDataKmenova() {
+	public static void displayDataKmenova() {
 		try {
 			Statement statement = DatabaseConnectionManager.getManagerInstance().getConnectionObject()
 					.createStatement();
