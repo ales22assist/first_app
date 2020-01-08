@@ -6,7 +6,6 @@ import java.sql.SQLException;
 
 import configuration.ApplicationAccessConf;
 
-
 public class DatabaseConnectionManager {
 
 	private Connection connection;
@@ -14,7 +13,7 @@ public class DatabaseConnectionManager {
 
 	private DatabaseConnectionManager() {
 	}
-	
+
 	public static void connectDriver() {
 		try {
 			Class.forName(ApplicationAccessConf.getDriverClass());
@@ -28,23 +27,21 @@ public class DatabaseConnectionManager {
 
 	public static DatabaseConnectionManager getManagerInstance() {
 		return connectionInstance;
-	}	
-	
+	}
+
 	public Connection getConnectionObject() {
 		return connection;
 	}
 
 	public void connect() {
 		try {
-			connection = DriverManager.getConnection(ApplicationAccessConf.getUrl(), ApplicationAccessConf.getUserName(),
-					ApplicationAccessConf.getUserPassword());
+			connection = DriverManager.getConnection(ApplicationAccessConf.getUrl(),
+					ApplicationAccessConf.getUserName(), ApplicationAccessConf.getUserPassword());
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		System.out.println("Successfully established database connection...");
 	}
-
-
 
 	public void disconnect() {
 		try {

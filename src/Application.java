@@ -17,16 +17,18 @@ public class Application {
 		PropertyConfigurator.configure(ApplicationAccessConf.getLogPropertyFile());
 
 		LOGGER.debug("BEGIN");
-		DatabaseConnectionManager.connectDriver();		
+		DatabaseConnectionManager.connectDriver();
 
-		try (Connection connection = DriverManager.getConnection(ApplicationAccessConf.getUrl(), 
-																ApplicationAccessConf.getUserName(),
-																ApplicationAccessConf.getUserPassword());){
+		try (Connection connection = DriverManager.getConnection(ApplicationAccessConf.getUrl(),
+				ApplicationAccessConf.getUserName(), ApplicationAccessConf.getUserPassword());) {
 			LOGGER.debug("------------Successfully established database connection...------------");
-			
+
 			ToolDAO.createInventoryTables(connection.createStatement());
+			ToolDAO.saveNewToolToKmenova(4, "Lopata", 10);
 			ToolDAO.displayDataKmenova();
-			
+			ToolDAO.displayDataZmenova();
+			ToolDAO.displayDataProtocol();
+
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
