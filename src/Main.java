@@ -1,3 +1,8 @@
+/*
+ * 
+ * JUST FOR TESTING POURPOSSES
+ * 
+ */
 import configuration.*;
 import connection_manager.DatabaseConnectionManager;
 import dao.ToolDAO;
@@ -23,7 +28,7 @@ public class Main {
 				//	ToolDAO.saveNewToolToKmenova(2, "Lopata", 10);
 					ToolDAO.displayDataKmenova();
 
-			} catch (Exception e) {
+			} catch (Exception exc) {
 				// TODO: handle exception
 			}
 
