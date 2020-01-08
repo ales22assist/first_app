@@ -12,35 +12,44 @@ public class ToolDAO {
 
 	public ToolDAO() {
 	}
-
 	public static void createInventoryTables(Statement statement) throws SQLException {
 
-		
-			statement.execute("CREATE TABLE IF NOT EXISTS public.inventory_kmenova(id INTEGER NOT NULL, "
-					+ "tool_description TEXT COLLATE pg_catalog.\"default\", total_amount integer, "
-					+ "CONSTRAINT inventory_kmenova_pkey PRIMARY KEY (id))");
-		
-			statement.execute("CREATE TABLE IF NOT EXISTS public.inventory_zmenova(id INTEGER NOT NULL, "
-					+ "tool_description text COLLATE pg_catalog.\"default\", " + "tool_amount_change integer NOT NULL, "
-					+ "operation_successed BOOLEAN DEFAULT false, "
-					+ "CONSTRAINT inventory_zmenova_pkey PRIMARY KEY (id))");
+		statement.execute(
+				"CREATE TABLE IF NOT EXISTS public.inventory_kmenova(id SERIAL UNIQUE, "
+				+ "tool_description TEXT COLLATE pg_catalog.\"default\", total_amount integer)");
 
-			statement.execute("CREATE TABLE IF NOT EXISTS public.inventory_protocol(id INTEGER NOT NULL, "
-					+ "tool_description text COLLATE pg_catalog.\"default\", " + "tool_amount_change integer NOT NULL, "
-					+ "created_at timestamp(0) without time zone NOT NULL DEFAULT now(), "
-					+ "updated_at timestamp(0) without time zone NOT NULL DEFAULT now(), "
-					+ "operation_successed BOOLEAN DEFAULT false, "
-					+ "CONSTRAINT inventory_protocol_pkey PRIMARY KEY (id))");
-			
+		statement.execute(
+				"CREATE TABLE IF NOT EXISTS public.inventory_zmenova(id SERIAL PRIMARY KEY, id_inventory_kmenova SERIAL NOT NULL, "
+				+ "tool_description text COLLATE pg_catalog.\"default\", " + "tool_amount_change integer NOT NULL, "
+				+ "operation_successed BOOLEAN DEFAULT false)");
+
+		statement.execute(
+				"CREATE TABLE IF NOT EXISTS public.inventory_protocol(id SERIAL PRIMARY KEY, id_inventory_kmenova SERIAL NOT NULL, "
+				+ "tool_description text COLLATE pg_catalog.\"default\", " + "tool_amount_change integer NOT NULL, "
+				+ "created_at timestamp(0) without time zone NOT NULL DEFAULT now(), "
+				+ "updated_at timestamp(0) without time zone NOT NULL DEFAULT now(), "
+				+ "operation_successed BOOLEAN DEFAULT false)");
 	}
-
+	
+	public static String updateInventoryZmenova(int id) {
+		
+		return "UPDATE inventory_zmenova SET operation_successed = true WHERE id = " + id;
+	}
+	
+	public static String updateInventoryKmenova(int id, int amountChanged, int actualAmmount) {
+		
+		int newAmount = actualAmmount + amountChanged;
+		return ("UPDATE inventory_kmenova SET total_amount = " + newAmount + " WHERE id = " + id);
+	}
+	
 	public static void saveNewToolToKmenova(int toolId, String toolName, int toolAmount) throws SQLException {
+		
 		try {
 			DatabaseConnectionManager databaseConnection = DatabaseConnectionManager.getManagerInstance();
 			databaseConnection.connect();
 
 			PreparedStatement saveNewTool = DatabaseConnectionManager.getManagerInstance().getConnectionObject()
-					.prepareStatement("INSERT INTO inventory_kmenova VALUES(?,?,?) "); 															
+					.prepareStatement("INSERT INTO inventory_kmenova VALUES(?,?,?) ");
 			saveNewTool.setInt(1, toolId);
 			saveNewTool.setString(2, toolName);
 			saveNewTool.setInt(3, toolAmount);
@@ -51,10 +60,38 @@ public class ToolDAO {
 			e.printStackTrace();
 		}
 	}
+	
+	public static void createChangeInInventoryZmenova(int toolId, String toolName, int changeAmount) throws SQLException {
+
+			DatabaseConnectionManager databaseConnection = DatabaseConnectionManager.getManagerInstance();
+			databaseConnection.connect();
+
+			PreparedStatement saveNewTool = DatabaseConnectionManager.getManagerInstance().getConnectionObject()
+					.prepareStatement("INSERT INTO inventory_zmenova VALUES(?,?,?) ");
+			saveNewTool.setInt(1, toolId);
+			saveNewTool.setString(2, toolName);
+			saveNewTool.setInt(3, changeAmount);
+			saveNewTool.executeUpdate();
+	}
+	
+	public static void createChangeInInventoryProtocol(int toolId, String toolName, int changeAmount, boolean operationSucceded) throws SQLException {
+		
+		DatabaseConnectionManager databaseConnection = DatabaseConnectionManager.getManagerInstance();
+		databaseConnection.connect();
+
+		PreparedStatement saveNewTool = DatabaseConnectionManager.getManagerInstance().getConnectionObject()
+				.prepareStatement("INSERT INTO inventory_protocol VALUES(?,?,?) ");
+		saveNewTool.setInt(1, toolId);
+		saveNewTool.setString(2, toolName);
+		saveNewTool.setInt(3, changeAmount);
+		saveNewTool.setBoolean(4, operationSucceded);
+		saveNewTool.executeUpdate();
+	}
 
 	public static void displayDataKmenova() {
 		try {
-			Statement statement = DatabaseConnectionManager.getManagerInstance().getConnectionObject().createStatement();
+			Statement statement = DatabaseConnectionManager.getManagerInstance().getConnectionObject()
+					.createStatement();
 			String queryString = "select * from inventory_kmenova";
 			ResultSet resultSet = statement.executeQuery(queryString);
 
@@ -63,8 +100,8 @@ public class ToolDAO {
 				String tool = resultSet.getString("tool_description");
 				Integer amount = resultSet.getInt("total_amount");
 				System.out.println(
-						"|| id: " + Integer.toString(id) + " || tool_description: " + tool + " || total_amount: " + amount.toString()
-								+ " || ");
+						"|| id: " + Integer.toString(id) + " || tool_description: " + tool
+						+ " || total_amount: " + amount.toString() + " || ");
 			}
 
 		} catch (SQLException sqlException) {
@@ -73,10 +110,11 @@ public class ToolDAO {
 			System.out.println("ErrorCode: " + Integer.toString(errCode) + " SQLState " + SQLState);
 		}
 	}
-	
+
 	public static void displayDataZmenova() {
 		try {
-			Statement statement = DatabaseConnectionManager.getManagerInstance().getConnectionObject().createStatement();
+			Statement statement = DatabaseConnectionManager.getManagerInstance().getConnectionObject()
+					.createStatement();
 			String queryString = "select * from inventory_zmenova";
 			ResultSet resultSet = statement.executeQuery(queryString);
 
@@ -87,8 +125,8 @@ public class ToolDAO {
 				Boolean operationStatus = resultSet.getBoolean("operation_status");
 
 				System.out.println(
-						"|| id: " + Integer.toString(id) + " || tool_description: " + tool + " || tool_amount_change: " + amount.toString()
-								+ " || " + "operation_status: " + operationStatus + " || ");
+						"|| id: " + Integer.toString(id) + " || tool_description: " + tool + " || tool_amount_change: "
+								+ amount.toString() + " || " + "operation_status: " + operationStatus + " || ");
 			}
 
 		} catch (SQLException sqlException) {
@@ -100,7 +138,8 @@ public class ToolDAO {
 
 	public static void displayDataProtocol() {
 		try {
-			Statement statement = DatabaseConnectionManager.getManagerInstance().getConnectionObject().createStatement();
+			Statement statement = DatabaseConnectionManager.getManagerInstance().getConnectionObject()
+					.createStatement();
 			String queryString = "select * from inventory_protocol";
 			ResultSet resultSet = statement.executeQuery(queryString);
 
@@ -113,8 +152,9 @@ public class ToolDAO {
 				Boolean operationStatus = resultSet.getBoolean("operation_status");
 
 				System.out.println(
-						"|| id: " + Integer.toString(id) + " || tool_description: " + tool + " || tool_amount_change: " + amount.toString()
-								+ " || " + "created at: " + tsTimestamp + " || " + "updated at: " + updTimestamp + " || " + "operation_status: " + operationStatus + " || ");
+						"|| id: " + Integer.toString(id) + " || tool_description: " + tool + " || tool_amount_change: "
+								+ amount.toString() + " || " + "created at: " + tsTimestamp + " || " + "updated at: "
+								+ updTimestamp + " || " + "operation_status: " + operationStatus + " || ");
 			}
 
 		} catch (SQLException sqlException) {
@@ -122,5 +162,5 @@ public class ToolDAO {
 			String SQLState = sqlException.getSQLState();
 			System.out.println("ErrorCode: " + Integer.toString(errCode) + " SQLState " + SQLState);
 		}
-	}	
+	}
 }
