@@ -7,13 +7,9 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
 
-import org.apache.log4j.Logger;
-
 import connection_manager.DatabaseConnectionManager;
 
 public class ToolDAO {
-	
-	private static final Logger LOGGER = Logger.getLogger(ToolDAO.class);
 
 	public ToolDAO() {
 	}
@@ -60,7 +56,7 @@ public class ToolDAO {
 			System.out.println("New tool successfully saved to database...");
 
 		} catch (SQLException e) {
-			LOGGER.debug("Id already present");
+			e.printStackTrace();
 		}
 	}
 
