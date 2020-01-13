@@ -5,7 +5,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.sql.Timestamp;
 
 import org.apache.log4j.Logger;
 
@@ -76,14 +75,13 @@ public class ToolDAO {
 
 		try (ResultSet rsZmenovaInventory = connection.createStatement().executeQuery(
 				"SELECT tool_id, tool_description, tool_amount_change, id FROM inventory_zmenova WHERE operation_successed = false ");
-				
 
 				Statement statement = connection.createStatement();) {
 
 			while (rsZmenovaInventory.next()) {
 				boolean condition = true;
-				try (ResultSet rsKmenovaInventory = connection.createStatement()
-						.executeQuery("SELECT id, tool_description, total_amount FROM inventory_kmenova ORDER BY id");){
+				try (ResultSet rsKmenovaInventory = connection.createStatement().executeQuery(
+						"SELECT id, tool_description, total_amount FROM inventory_kmenova ORDER BY id");) {
 
 					while (rsKmenovaInventory.next()) {
 						if (rsKmenovaInventory.getInt(1) == rsZmenovaInventory.getInt(1)) {
@@ -101,7 +99,7 @@ public class ToolDAO {
 										rsZmenovaInventory.getInt(3), false, rsKmenovaInventory.getString(2)));
 								statement.execute(ToolDAO.updateInventoryZmenova(rsZmenovaInventory.getInt(4)));
 
-								LOGGER.debug("Operation not successfull due to lack of "
+								LOGGER.error("Operation not successfull due to lack of "
 										+ rsKmenovaInventory.getString(2) + " in inventory");
 							}
 							condition = false;
@@ -124,81 +122,6 @@ public class ToolDAO {
 		} catch (SQLException s) {
 			LOGGER.error(s);
 		} catch (Exception e) {
-		}
-	}
-
-	public static void displayDataKmenova() {
-		try {
-			Statement statement = DatabaseConnectionManager.getManagerInstance().getConnectionObject()
-					.createStatement();
-			String queryString = "select * from inventory_kmenova";
-			ResultSet resultSet = statement.executeQuery(queryString);
-
-			while (resultSet.next()) {
-				int id = resultSet.getInt("id");
-				String tool = resultSet.getString("tool_description");
-				Integer amount = resultSet.getInt("total_amount");
-				System.out.println("|| id: " + Integer.toString(id) + " || tool_description: " + tool
-						+ " || total_amount: " + amount.toString() + " || ");
-			}
-
-		} catch (SQLException sqlException) {
-			int errCode = sqlException.getErrorCode();
-			String SQLState = sqlException.getSQLState();
-			System.out.println("ErrorCode: " + Integer.toString(errCode) + " SQLState " + SQLState);
-		}
-	}
-
-	public static void displayDataZmenova() {
-		try {
-			Statement statement = DatabaseConnectionManager.getManagerInstance().getConnectionObject()
-					.createStatement();
-			String queryString = "select * from inventory_zmenova";
-			ResultSet resultSet = statement.executeQuery(queryString);
-
-			while (resultSet.next()) {
-				int id = resultSet.getInt("tool_id");
-				String tool = resultSet.getString("tool_description");
-				Integer amount = resultSet.getInt("tool_amount_change");
-				Boolean operationStatus = resultSet.getBoolean("operation_status");
-
-				System.out.println(
-						"|| id: " + Integer.toString(id) + " || tool_description: " + tool + " || tool_amount_change: "
-								+ amount.toString() + " || " + "operation_status: " + operationStatus + " || ");
-			}
-
-		} catch (SQLException sqlException) {
-			int errCode = sqlException.getErrorCode();
-			String SQLState = sqlException.getSQLState();
-			System.out.println("ErrorCode: " + Integer.toString(errCode) + " SQLState " + SQLState);
-		}
-	}
-
-	public static void displayDataProtocol() {
-		try {
-			Statement statement = DatabaseConnectionManager.getManagerInstance().getConnectionObject()
-					.createStatement();
-			String queryString = "select * from inventory_protocol";
-			ResultSet resultSet = statement.executeQuery(queryString);
-
-			while (resultSet.next()) {
-				int id = resultSet.getInt("tool_id");
-				String tool = resultSet.getString("tool_description");
-				Integer amount = resultSet.getInt("tool_amount_change");
-				Timestamp tsTimestamp = resultSet.getTimestamp("created_at");
-				Timestamp updTimestamp = resultSet.getTimestamp("updated_at");
-				Boolean operationStatus = resultSet.getBoolean("operation_status");
-
-				System.out.println(
-						"|| id: " + Integer.toString(id) + " || tool_description: " + tool + " || tool_amount_change: "
-								+ amount.toString() + " || " + "created at: " + tsTimestamp + " || " + "updated at: "
-								+ updTimestamp + " || " + "operation_status: " + operationStatus + " || ");
-			}
-
-		} catch (SQLException sqlException) {
-			int errCode = sqlException.getErrorCode();
-			String SQLState = sqlException.getSQLState();
-			System.out.println("ErrorCode: " + Integer.toString(errCode) + " SQLState " + SQLState);
 		}
 	}
 }

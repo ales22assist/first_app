@@ -1,6 +1,8 @@
 import configuration.*;
 import connection_manager.DatabaseConnectionManager;
 import dao.CreateTables;
+import dao.DisplayTableToConsole;
+import dao.ToolDAO;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -15,35 +17,29 @@ public class Application {
 
 	public static void main(String[] args) {
 
+		
 		PropertyConfigurator.configure(ApplicationAccessConf.getLogPropertyFile());
-
-		LOGGER.debug("BEGIN");
 		DatabaseConnectionManager.connectDriver();
 
+		LOGGER.debug("BEGIN");
 		try (Connection connection = DriverManager.getConnection(ApplicationAccessConf.getUrl(),
-				ApplicationAccessConf.getUserName(), ApplicationAccessConf.getUserPassword());) {
-			
+				ApplicationAccessConf.getUserName(), ApplicationAccessConf.getUserPassword());
+				Statement statement = connection.createStatement();) {
 			
 			LOGGER.debug("------------Successfully established database connection...------------");
-			Statement statement = connection.createStatement();
-			
-			CreateTables.createInventoryTables(connection.createStatement());
 			
 			
-		//	statement.execute(ToolDAO.updateInventoryKmenova(51, -20, 22));
-		//	ToolDAO.makeChange(connection);
+			 CreateTables.createInventoryTables(connection.createStatement());
+			// statement.execute(ToolDAO.saveNewToolToKmenova(1, "PC", 20));
+			 // statement.execute(ToolDAO.saveNewToolToKmenova(2, "LOPATA", 15));
+			 statement.execute(ToolDAO.createChangeInInventoryZmenova(1, "PC", 15));
+			 DisplayTableToConsole.displayDataKmenova();
+			 DisplayTableToConsole.displayDataZmenova();
+			 DisplayTableToConsole.displayInventoryProtocol();
+			 ToolDAO.makeChange(connection);
 			
-		//	statement.execute(ToolDAO.createChangeInInventoryZmenova(51, "AUTO", -20));
-			//ToolDAO.makeChange(connection);
-			
-			
-		// ToolDAO.saveNewToolToKmenova(51, "AUTO", 22);
-		// ToolDAO.createChangeInInventoryZmenova(51, "AUTO", -20);
-			//
-		//	ToolDAO.displayDataKmenova();
-
-		} catch (Exception e) {
-			// TODO: handle exception
+		} catch (Exception exc) {
+			LOGGER.error(exc);
 		}
 
 		LOGGER.debug("END");

@@ -40,7 +40,6 @@ public class DatabaseConnectionManager {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		System.out.println("Successfully established database connection...");
 	}
 
 	public void disconnect() {
