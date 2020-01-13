@@ -37,7 +37,7 @@ public class Main {
 				  statement.execute(ToolDAO.createChangeInInventoryZmenova(15, "PC", 11));
 				 ToolDAO.makeChange(connection);
 				
-			} catch (SQLException exc) {
+			} catch (Exception exc) {
 				LOGGER.error(exc);
 			}
 
