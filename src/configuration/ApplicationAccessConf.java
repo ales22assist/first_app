@@ -2,8 +2,6 @@ package configuration;
 
 import property_file_units.PropertyFileUnits;
 
-import org.apache.log4j.PropertyConfigurator;
-
 import exception.*;
 
 public class ApplicationAccessConf {
