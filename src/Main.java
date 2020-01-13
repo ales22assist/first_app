@@ -34,7 +34,8 @@ public class Main {
 				// statement.execute("(Drop table inventory_kmenova)");
 				// statement.execute("(Drop table inventory_zmenova)");
 				// statement.execute("(Drop table inventory_protocol)");
-				  statement.execute(ToolDAO.createChangeInInventoryZmenova(15, "PC", 11));
+				  statement.execute(ToolDAO.createChangeInInventoryZmenova(15, "PC", -211));
+				  ToolDAO.displayDataKmenova();
 				 ToolDAO.makeChange(connection);
 				
 			} catch (Exception exc) {
