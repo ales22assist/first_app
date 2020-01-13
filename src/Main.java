@@ -6,10 +6,10 @@
 import configuration.*;
 import connection_manager.DatabaseConnectionManager;
 import dao.ToolDAO;
+import dao.CreateTables;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.SQLException;
 import java.sql.Statement;
 
 import org.apache.log4j.Logger;
@@ -29,7 +29,7 @@ public class Main {
 					Statement statement = connection.createStatement();
 					) {
 				
-				 ToolDAO.createInventoryTables(connection.createStatement());
+				 CreateTables.createInventoryTables(connection.createStatement());
 				// statement.execute(ToolDAO.saveNewToolToKmenova(15, "PC", 2));
 				// statement.execute("(Drop table inventory_kmenova)");
 				// statement.execute("(Drop table inventory_zmenova)");
