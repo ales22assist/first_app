@@ -1,6 +1,6 @@
 import configuration.*;
 import connection_manager.DatabaseConnectionManager;
-import dao.ToolDAO;
+import dao.CreateTables;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -27,7 +27,7 @@ public class Application {
 			LOGGER.debug("------------Successfully established database connection...------------");
 			Statement statement = connection.createStatement();
 			
-			ToolDAO.createInventoryTables(connection.createStatement());
+			CreateTables.createInventoryTables(connection.createStatement());
 			
 			
 		//	statement.execute(ToolDAO.updateInventoryKmenova(51, -20, 22));
