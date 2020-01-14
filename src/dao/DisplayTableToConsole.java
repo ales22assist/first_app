@@ -5,9 +5,23 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
 
+import org.apache.log4j.Logger;
+
 import connection_manager.DatabaseConnectionManager;
 
 public class DisplayTableToConsole {
+	
+	public static final Logger LOGGER = Logger.getLogger(DisplayTableToConsole.class);
+	
+		static SQLException sqlException;
+		static int errCode = sqlException.getErrorCode();
+		static String sQLState = sqlException.getSQLState();
+		static String errorMessage = ("ErrorCode: " + Integer.toString(errCode) + " SQLState " + sQLState);
+		
+		
+	
+	private DisplayTableToConsole() {
+	}
 
 	public static void displayDataKmenova() {
 		System.out.println("***THIS IS INVENTORY.KMENOVA***");
@@ -27,9 +41,7 @@ public class DisplayTableToConsole {
 			}
 
 		} catch (SQLException sqlException) {
-			int errCode = sqlException.getErrorCode();
-			String SQLState = sqlException.getSQLState();
-			System.out.println("ErrorCode: " + Integer.toString(errCode) + " SQLState " + SQLState);
+			LOGGER.debug(errorMessage);
 		}
 	}
 
@@ -53,9 +65,7 @@ public class DisplayTableToConsole {
 			}
 
 		} catch (SQLException sqlException) {
-			int errCode = sqlException.getErrorCode();
-			String SQLState = sqlException.getSQLState();
-			System.out.println("ErrorCode: " + Integer.toString(errCode) + " SQLState " + SQLState);
+			LOGGER.debug(errorMessage);
 		}
 	}
 
@@ -83,9 +93,7 @@ public class DisplayTableToConsole {
 			}
 
 		} catch (SQLException sqlException) {
-			int errCode = sqlException.getErrorCode();
-			String SQLState = sqlException.getSQLState();
-			System.out.println("ErrorCode: " + Integer.toString(errCode) + " SQLState " + SQLState);
+			LOGGER.debug(errorMessage);
 		}
 	}
 }
