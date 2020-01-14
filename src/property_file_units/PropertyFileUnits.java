@@ -19,7 +19,7 @@ public class PropertyFileUnits {
 
 	public PropertyFileUnits() {
 
-		LOGGER.debug("begin");
+		LOGGER.debug("begin file input stream");
 		properties = new Properties();
 
 		try {
@@ -51,7 +51,7 @@ public class PropertyFileUnits {
 
 	public String getProperty(String propertyName) throws PropertyFileException {
 
-		LOGGER.debug("begin");
+		LOGGER.debug("begin getting property");
 		String propertyValue = properties.getProperty(propertyName);
 		LOGGER.debug("propertyName: " + propertyName);
 		LOGGER.debug("propertyValue: " + propertyValue);
