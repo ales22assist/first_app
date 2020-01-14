@@ -2,11 +2,14 @@ package connection_manager;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.SQLException;
+
+import org.apache.log4j.Logger;
 
 import configuration.ApplicationAccessConf;
 
 public class DatabaseConnectionManager {
+	
+	public static final Logger LOGGER = Logger.getLogger(DatabaseConnectionManager.class);
 
 	private Connection connection;
 	private static DatabaseConnectionManager connectionInstance = new DatabaseConnectionManager();
@@ -19,9 +22,7 @@ public class DatabaseConnectionManager {
 			Class.forName(ApplicationAccessConf.getDriverClass());
 
 		} catch (ClassNotFoundException exception) {
-			System.out.println("Driver not loaded...");
-			System.out.println(exception);
-			return;
+			LOGGER.debug("DRIVER NOT LOADED");
 		}
 	}
 
@@ -37,17 +38,16 @@ public class DatabaseConnectionManager {
 		try {
 			connection = DriverManager.getConnection(ApplicationAccessConf.getUrl(),
 					ApplicationAccessConf.getUserName(), ApplicationAccessConf.getUserPassword());
-		} catch (SQLException e) {
-			e.printStackTrace();
+		} catch (Exception e) {
+			LOGGER.debug("CONNECTION FAILED");
 		}
 	}
 
 	public void disconnect() {
 		try {
 			connection.close();
-		} catch (SQLException e) {
-			e.printStackTrace();
+		} catch (Exception e) {
+			LOGGER.debug("COULDNT DISCONNECT PROPERLY");
 		}
-		System.out.println("Successfully disconnected from database...");
 	}
 }

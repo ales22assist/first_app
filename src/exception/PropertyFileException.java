@@ -7,8 +7,14 @@ public class PropertyFileException extends java.lang.Exception {
 	private String propertyName;
 	private String propertyValue;
 
-	public PropertyFileException() {
+	public PropertyFileException(String propertyName, String propertyValue) {
 		super();
+		this.propertyName = propertyName;
+		this.propertyValue = propertyValue;
+	}
+
+	public PropertyFileException() {
+
 	}
 
 	public PropertyFileException(String message) {
