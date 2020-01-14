@@ -14,7 +14,7 @@ public class ToolDAO {
 
 	public static final Logger LOGGER = Logger.getLogger(ToolDAO.class);
 
-	public ToolDAO() {
+	private ToolDAO() {
 	}
 
 	public static String updateInventoryZmenova(int id) {
@@ -115,13 +115,14 @@ public class ToolDAO {
 						LOGGER.debug("Saved new tool: " + rsZmenovaInventory.getString(2));
 					}
 				} catch (Exception e) {
-					// TODO: handle exception
+					LOGGER.error(e);
 				}
 				LOGGER.debug("END OF OPERATION");
 			}
 		} catch (SQLException s) {
 			LOGGER.error(s);
 		} catch (Exception e) {
+			LOGGER.error(e);
 		}
 	}
 }
