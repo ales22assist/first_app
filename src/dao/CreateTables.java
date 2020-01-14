@@ -7,7 +7,10 @@ import org.apache.log4j.Logger;
 
 public class CreateTables {
 	
-	public static final Logger LOGGER = Logger.getLogger(ToolDAO.class);
+	public static final Logger LOGGER = Logger.getLogger(CreateTables.class);
+	
+	private CreateTables() {
+	}
 	
 	public static void createInventoryTables(Statement statement) throws SQLException {
 
