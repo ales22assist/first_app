@@ -28,11 +28,10 @@ public class Application {
 			
 			LOGGER.debug("------------Successfully established database connection...------------");
 			
-			
 			 CreateTables.createInventoryTables(connection.createStatement());
-			// statement.execute(ToolDAO.saveNewToolToKmenova(1, "PC", 20));
-			 // statement.execute(ToolDAO.saveNewToolToKmenova(2, "LOPATA", 15));
-			 statement.execute(ToolDAO.createChangeInInventoryZmenova(1, "PC", 15));
+			 statement.execute(ToolDAO.saveNewToolToKmenova(1, "PC", 20));
+			 statement.execute(ToolDAO.saveNewToolToKmenova(2, "LOPATA", 15));
+			 // statement.execute(ToolDAO.createChangeInInventoryZmenova(1, "PC", 15));
 			 DisplayTableToConsole.displayDataKmenova();
 			 DisplayTableToConsole.displayDataZmenova();
 			 DisplayTableToConsole.displayInventoryProtocol();
